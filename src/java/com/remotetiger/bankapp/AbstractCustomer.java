@@ -1,19 +1,15 @@
 package com.remotetiger.bankapp;
 
-public class AbstractCustomer {
-
-	int id;
+ class AbstractCustomer {
+	final int id;
 	String name;
-	String dateOfBirth;
-	Address address;
+	String dateofbirth;
 
-	public int getId() {
-		return id;
-	}
-
-
-	public String getName() {
-		return name;
+	public AbstractCustomer(int id, String name, String dateofbirth) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.dateofbirth = dateofbirth;
 	}
 
 	@Override
@@ -23,32 +19,29 @@ public class AbstractCustomer {
 		builder.append(id);
 		builder.append(", name=");
 		builder.append(name);
-		builder.append(", dateOfBirth=");
-		builder.append(dateOfBirth);
-		builder.append(", address=");
-		builder.append(address.toString());
+		builder.append(", dateofbirth=");
+		builder.append(dateofbirth);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getDateOfBirth() {
-		return dateOfBirth;
+	public String getDateofbirth() {
+		return dateofbirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+	public void setDateofbirth(String dateofbirth) {
+		this.dateofbirth = dateofbirth;
 	}
 
-	public Address getAddress() {
-		return address;
+	public int getId() {
+		return id;
 	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
 }
