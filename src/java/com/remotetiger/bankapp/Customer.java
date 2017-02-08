@@ -1,6 +1,6 @@
 package com.remotetiger.bankapp;
 
-class Customer extends AbstractCustomer {
+public class Customer extends AbstractCustomer {
 
 	Address address;
 	Login login;
