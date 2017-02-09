@@ -1,6 +1,6 @@
 package com.remotetiger.bankapp;
 
- class Address {
+ public class Address {
 	final int id;
 	String streetname;
 	int houseno;

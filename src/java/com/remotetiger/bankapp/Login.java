@@ -1,6 +1,6 @@
 package com.remotetiger.bankapp;
 
- class Login {
+ public class Login {
 	final int id;
 	String username;
 	String password;
