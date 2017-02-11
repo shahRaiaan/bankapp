@@ -5,6 +5,12 @@ public class Customer extends AbstractCustomer {
 	Address address;
 	Login login;
 
+	
+	public Customer(int id){
+		super(id);
+		
+		
+	}
 	public Customer(int id, String name, String dateofbirth, Address address, Login login) {
 		super(id, name, dateofbirth);
 		this.address = address;
@@ -33,7 +39,9 @@ public class Customer extends AbstractCustomer {
 		builder.append("Customer [address=");
 		builder.append(address.toString());
 		builder.append(", login=");
+		if (login!=null){
 		builder.append(login.toString());
+		}
 		builder.append("]");
 		return builder.toString();
 	}

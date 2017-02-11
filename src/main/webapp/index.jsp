@@ -1,7 +1,7 @@
 <%@ include file="header.html"%>
 <div class="container">
 
-	<form class="form-signin" action="" method="post">
+	<form class="form-signin" action="login" method="post">
 		<h2 class="form-signin-heading">Please sign in</h2>
 		<label for="userName" class="sr-only">Username</label> <input
 			name="getUserName" type="userName" id="inputName"

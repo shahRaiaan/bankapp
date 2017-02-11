@@ -5,6 +5,10 @@ package com.remotetiger.bankapp;
 	String name;
 	String dateofbirth;
 
+	public AbstractCustomer(int id){
+		this.id = id;
+	}
+	
 	public AbstractCustomer(int id, String name, String dateofbirth) {
 		super();
 		this.id = id;

@@ -3,6 +3,7 @@ package com.remotetiger.bankapp;
 import java.sql.SQLException;
 
 import com.remotetiger.dao.CustomerDao;
+import com.remotetiger.dao.LoginDao;
 
 public class Main {
 
@@ -14,12 +15,13 @@ public class Main {
 		Customer customer = new Customer(1, "Raiaan Shah", "7/4/90", address, log);
 
 		CustomerDao dao = new CustomerDao();
-		try {
-			dao.addCustomer(customer);
+		LoginDao logindao = new LoginDao();
+		/*try {
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 

@@ -6,6 +6,10 @@ package com.remotetiger.bankapp;
 	int houseno;
 	int zipcode;
 
+	
+	public Address(int id){
+		this.id = id;
+	}
 	public Address(int id, String streetname, int houseno, int zipcode) {
 		super();
 		this.id = id;

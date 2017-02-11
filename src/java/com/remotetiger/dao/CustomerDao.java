@@ -4,6 +4,7 @@ import com.remotetiger.bankapp.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CustomerDao {
@@ -21,39 +22,93 @@ public class CustomerDao {
 	}
 
 	public void addCustomer(Customer customer) throws SQLException {
-		Connection conn = getConnection();
-		conn.setAutoCommit(false);
+		Connection conn = null;
+		PreparedStatement stmtLogin = null;
+		PreparedStatement stmtAddress = null;
+		PreparedStatement stmtCustomer = null;
+		try {
+			conn = getConnection();
+			conn.setAutoCommit(false);
 
-		String logintablesql = "insert into bank.login (username,password,security_question,security_question_answer,customer_id) values(?,?,?,?,?)";
-		PreparedStatement stmt = conn.prepareStatement(logintablesql);
-		stmt.setString(1, customer.getLogin().getUsername());
-		stmt.setString(2, customer.getLogin().getPassword());
-		stmt.setString(3, customer.getLogin().getSecurityQuestion());
-		stmt.setString(4, customer.getLogin().getSecurityAnswer());
-		stmt.setInt(5, customer.getId());
-		stmt.executeUpdate();
+			String logintablesql = "insert into bank.login (username,password,security_question,security_question_answer,customer_id) values(?,?,?,?,?)";
+			stmtLogin = conn.prepareStatement(logintablesql);
+			stmtLogin.setString(1, customer.getLogin().getUsername());
 
-		String addresstablesql = "insert into bank.address(customer_id,street_name,house_no,zipcode) values(?,?,?,?)";
-		stmt = conn.prepareStatement(addresstablesql);
-		stmt.setInt(1, customer.getId());
-		stmt.setString(2, customer.getAddress().getStreetname());
-		stmt.setInt(3, customer.getAddress().getHouseno());
-		stmt.setInt(4, customer.getAddress().getZipcode());
+			stmtLogin.setString(2, customer.getLogin().getPassword());
 
-		stmt.executeUpdate();
+			stmtLogin.setString(3, customer.getLogin().getSecurityQuestion());
+			stmtLogin.setString(4, customer.getLogin().getSecurityAnswer());
+			stmtLogin.setInt(5, customer.getId());
+			stmtLogin.executeUpdate();
 
-		String customertablesql = "insert into bank.customer(customer_id,name,dateofbirth) values(?,?,?)";
-		stmt = conn.prepareStatement(customertablesql);
-		stmt.setInt(1, customer.getId());
-		stmt.setString(2, customer.getName());
-		stmt.setString(3, customer.getDateofbirth());
+			String addresstablesql = "insert into bank.address(customer_id,street_name,house_no,zipcode) values(?,?,?,?)";
+			stmtAddress = conn.prepareStatement(addresstablesql);
+			stmtAddress.setInt(1, customer.getId());
+			stmtAddress.setString(2, customer.getAddress().getStreetname());
+			stmtAddress.setInt(3, customer.getAddress().getHouseno());
+			stmtAddress.setInt(4, customer.getAddress().getZipcode());
+			stmtAddress.executeUpdate();
 
-		stmt.executeUpdate();
+			String customertablesql = "insert into bank.customer(customer_id,name,dateofbirth) values(?,?,?)";
+			stmtCustomer = conn.prepareStatement(customertablesql);
+			stmtCustomer.setInt(1, customer.getId());
+			stmtCustomer.setString(2, customer.getName());
+			stmtCustomer.setString(3, customer.getDateofbirth());
+			stmtCustomer.executeUpdate();
 
-		conn.commit();
-
-		stmt.close();
-		conn.close();
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conn.rollback();
+		} finally {
+			stmtLogin.close();
+			stmtAddress.close();
+			stmtCustomer.close();
+			conn.close();
+		}
 
 	}
+
+	public Customer getCustomerById(int id) throws SQLException {
+		Connection conn = null;
+		Customer customer = new Customer(id);
+		PreparedStatement stmtAddress = null;
+		PreparedStatement stmtCustomer = null;
+
+		try {
+			conn = getConnection();
+			String addresstablesql = "select * from bank.address where customer_id=" + id;
+			;
+			stmtAddress = conn.prepareStatement(addresstablesql);
+			ResultSet rs = stmtAddress.executeQuery();
+
+			Address address = new Address(id);
+			while (rs.next()) {
+				address.setStreetname(rs.getString(2));
+				address.setHouseno(rs.getInt(3));
+				address.setZipcode(rs.getInt(4));
+			}
+			customer.setAddress(address);
+
+			String customertablesql = "select * from bank.customer where customer_id=" + id;
+			stmtCustomer = conn.prepareStatement(customertablesql);
+			ResultSet rs2 = stmtCustomer.executeQuery();
+			while (rs2.next()) {
+
+				customer.setName(rs2.getString(2));
+				customer.setDateofbirth(rs2.getString(3));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+
+			stmtAddress.close();
+			stmtCustomer.close();
+			conn.close();
+		}
+		return customer;
+	}
+
 }
